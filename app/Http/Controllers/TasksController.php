@@ -37,7 +37,7 @@ class TasksController extends Controller
 
             }
 
-            $task = Tasks::create([
+            Tasks::create([
                 'title' => $request->title,
                 'description' => $request->description,
                 'user_id' => $request->user_id,
@@ -54,12 +54,46 @@ class TasksController extends Controller
                 return response()->json($data, 400);
             }
 
-            response()->json(201);
+            return response()->json(['message' => 'success'], 201);
 
-        } catch (\Throwable $th) {
-                return response()->json($th, 400);
+        } catch (\Throwable $th) {    
+            return response()->json($th, 400);
         }
 
+    }
+
+    public function updateStatus(Request $request, $id){
+        try {
+
+            $isValidate = Validator::make($request->all(), [
+                'status' => 'required|in:pending,in_progress,completed',
+            ]);
+
+            if($isValidate->fails()){
+
+                $data = ['message' => 'Validation error', 'error' => $isValidate->errors(), 'status' => 400];
+
+                return response()->json($data, 400);
+            }
+
+
+            $task = Tasks::where('id', $id)->where('user_id', $request->user_id)->first();
+
+            if(!$task){
+                $data = ['message' => 'task not found', 'status'=> 404];
+                return response()->json($data, 404);
+            }
+
+            $task->status = $request->status;
+            $task->save();
+
+            $data = ['message'=> 'status changed', 'status'=> 200];
+
+            return response()->json($data, 200);
+
+        } catch (\Throwable $th) {
+            return response()->json($th, 400);
+        }
     }
 
 
