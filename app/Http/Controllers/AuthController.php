@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         } catch (\Throwable $th) {
 
-            return response()->json(['message' => 'Something went wrog we are fixing for you'], $th->status);
+            return response()->json(['message' => 'Something went wrog we are fixing for you'], 400);
         
         }
 
