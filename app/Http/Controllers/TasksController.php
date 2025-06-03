@@ -110,10 +110,40 @@ class TasksController extends Controller
         return response()->json($aTask, 200);
     }
 
-
-    public function edit(Tasks $tasks)
+    public function statusOpen($status)
     {
-        //
+
+        if($status == 'pending') {
+            $aTask = auth()->user()->tasks->where('status', 'pending');
+         
+            if(!$aTask) return response(['message' => 'Task not found'], 404);
+    
+            return response()->json($aTask, 200);
+        }
+
+        if($status == 'in_progress') {
+            $aTask = auth()->user()->tasks->where('status', 'in_progress');
+         
+            if(!$aTask) return response(['message' => 'Task not found'], 404);
+    
+            return response()->json($aTask, 200);
+        }
+
+        if($status == 'completed') {
+            $aTask = auth()->user()->tasks->where('status', 'completed');
+         
+            if(!$aTask) return response(['message' => 'Task not found'], 404);
+    
+            return response()->json($aTask, 200);
+        }
+
+        $data = [
+            'message' => "$status, is not defined.  Try this { in_progress | pending | completed}",
+            'status' => 404
+        ];
+
+        return response()->json($data, 200);
+
     }
 
 
@@ -135,10 +165,8 @@ class TasksController extends Controller
             return response()->json($data, 400);
         }
 
-        #$aTime = new DateTime();
         $aTask->title = $request->title;
         $aTask->description = $request->description;
-        #$aTask->updated_at = $aTime->format('Y-m-d H:i:s');
 
         $aTask->save();
 

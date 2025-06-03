@@ -21,5 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/task/{id}/status', [TasksController::class, 'updateStatus']);
     Route::patch('/task/{id}', [TasksController::class, 'update']);
     Route::delete('/task/{id}', [TasksController::class, 'delete']);
-    Route::get('/tasks/{status}/{status}', [TasksController::class, 'filterByStatus']);
+    Route::get('/tasks/status/{status}', [TasksController::class, 'statusOpen']);
+    #Route::get('/tasks/in_progress', [TasksController::class, 'statusOpen']);
+    #Route::get('/tasks/pending', [TasksController::class, 'statusOpen']);
 });
