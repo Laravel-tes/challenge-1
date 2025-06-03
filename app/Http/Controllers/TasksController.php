@@ -25,7 +25,7 @@ class TasksController extends Controller
             'description' => 'nullable',
         ]);
 
-        $task = auth()->user->tasks()->create($validated);
+        $task = auth()->user()->tasks()->create($validated);
 
         return response()->json([], 201);
     }
