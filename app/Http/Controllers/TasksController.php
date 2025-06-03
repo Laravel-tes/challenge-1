@@ -54,7 +54,7 @@ class TasksController extends Controller
                 return response()->json($data, 400);
             }
 
-            return response()->json(['message' => 'success'], 201);
+            return response()->json(null, 201);
 
         } catch (\Throwable $th) {    
             return response()->json($th, 400);
@@ -76,8 +76,11 @@ class TasksController extends Controller
                 return response()->json($data, 400);
             }
 
+            $aTask = auth()->user()->tasks()->find($id);
 
-            $task = Tasks::where('id', $id)->where('user_id', $request->user_id)->first();
+            if(!$aTask) return response(['message'=> 'Task not found'], 404);
+
+            $task = Tasks::where('id', $id)->where('user_id', $aTask->user_id)->first();
 
             if(!$task){
                 $data = ['message' => 'task not found', 'status'=> 404];
@@ -125,8 +128,15 @@ class TasksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tasks $tasks)
+    public function delete($id)
     {
-        //
+        $aTask = auth()->user()->tasks()->find($id);
+
+        if(!$aTask) return response(['message'=> 'Task not found'], 404);
+
+        //Tasks::where('id', $id)->delete();
+
+        return response()->json($aTask->user_id, 200);
+        
     }
 }
