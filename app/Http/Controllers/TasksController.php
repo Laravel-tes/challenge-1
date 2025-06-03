@@ -10,21 +10,16 @@ use Illuminate\Support\Facades\Validator;
 
 class TasksController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return auth()->user()->tasks;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //try {
 
+        try {
+            
             $isvalidate = Validator::make($request->all(), [
                 'title' => 'required',
                 'description' => 'nullable',
@@ -61,18 +56,13 @@ class TasksController extends Controller
 
             response()->json(201);
 
-            #$task = auth()->user()->tasks()->create($validated);
+        } catch (\Throwable $th) {
+                return response()->json($th, 400);
+        }
 
-            #return response()->json($task, 201);
-
-        //} catch (\Throwable $th) {
-          //  return response()->json();
-        //}
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function findOne($id)
     {
         $aTask = auth()->user()->tasks()->find($id);
