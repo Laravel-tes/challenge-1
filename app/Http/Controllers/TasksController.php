@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
+
+
 class TasksController extends Controller
 {
     /**
@@ -20,22 +23,63 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required',
-            'description' => 'nullable',
-        ]);
+        //try {
 
-        $task = auth()->user()->tasks()->create($validated);
+            $isvalidate = Validator::make($request->all(), [
+                'title' => 'required',
+                'description' => 'nullable',
+                'user_id' => 'required',
+            ]);
 
-        return response()->json([], 201);
+            if($isvalidate->fails()){
+                $data = [
+                    'message' => 'validation require, check the data',
+                    'error' => $isvalidate->errors(),
+                    'status' => 400,
+                ];
+
+                return response()->json($data, 400);
+
+            }
+
+            $task = Tasks::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'user_id' => $request->user_id,
+            ]);
+
+         
+            if(!$request){
+                $data = [
+                    'message' => 'not is possible create task ',
+                    'error' => $isValidate->errors(),
+                    'status' => 400,
+                ];
+
+                return response()->json($data, 400);
+            }
+
+            response()->json(201);
+
+            #$task = auth()->user()->tasks()->create($validated);
+
+            #return response()->json($task, 201);
+
+        //} catch (\Throwable $th) {
+          //  return response()->json();
+        //}
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Tasks $tasks)
+    public function findOne($id)
     {
-        return auth()->user()->tasks;
+        $aTask = auth()->user()->tasks()->find($id);
+     
+        if(!$aTask) return response(['message' => 'Task not found'], 404);
+
+        return response()->json($aTask, 200);
     }
 
     /**
