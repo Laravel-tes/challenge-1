@@ -48,7 +48,7 @@ class TasksController extends Controller
             if(!$request){
                 $data = [
                     'message' => 'not is possible create task ',
-                    'error' => $isValidate->errors(),
+                    'error' => $isvalidate->errors(),
                     'status' => 400,
                 ];
 
@@ -110,7 +110,7 @@ class TasksController extends Controller
         return response()->json($aTask, 200);
     }
 
-    public function statusOpen($status)
+    public function filterByStatus($status)
     {
 
         if($status == 'pending') {
