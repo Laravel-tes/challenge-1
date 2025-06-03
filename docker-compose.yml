@@ -3,17 +3,17 @@ version: '3.8'
 services:
   mysql:
     image: mysql
-    container_name: todo-list-laravel-challenge
+    container_name: laravel_challenge
     restart: unless-stopped
     ports:
       - 3308:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: todo-list-laravel-challenge
+      MYSQL_DATABASE: laravel_challenge
       MYSQL_USER: laravel
       MYSQL_PASSWORD: laravel
-    volumes:
-      - mysql-data:/var/lib/mysql
+    #volumes:
+     # - mysql-data:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -26,6 +26,6 @@ services:
       PMA_USER: laravel
       PMA_PASSWORD: laravel
 
-volumes:
-  mysql-data:
+# volumes:
+  #mysql-data:
 
