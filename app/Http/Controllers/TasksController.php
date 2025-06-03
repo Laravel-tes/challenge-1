@@ -12,15 +12,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return auth()->user()->tasks;
     }
 
     /**
@@ -28,7 +20,14 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required',
+            'description' => 'nullable',
+        ]);
+
+        $task = auth()->user->tasks()->create($validated);
+
+        return response()->json([], 201);
     }
 
     /**
@@ -36,7 +35,7 @@ class TasksController extends Controller
      */
     public function show(Tasks $tasks)
     {
-        //
+        return auth()->user()->tasks;
     }
 
     /**
