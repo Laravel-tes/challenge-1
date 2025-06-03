@@ -121,7 +121,7 @@ class TasksController extends Controller
             return response()->json($aTask, 200);
         }
 
-        if($status == 'in_progress') {
+        if($status == 'progress') {
             $aTask = auth()->user()->tasks->where('status', 'in_progress');
          
             if(!$aTask) return response(['message' => 'Task not found'], 404);
@@ -138,7 +138,7 @@ class TasksController extends Controller
         }
 
         $data = [
-            'message' => "$status, is not defined.  Try this { in_progress | pending | completed}",
+            'message' => "$status, is not defined.  Try this { pending | progress | completed}",
             'status' => 404
         ];
 
