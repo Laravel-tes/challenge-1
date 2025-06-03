@@ -113,36 +113,19 @@ class TasksController extends Controller
     public function filterByStatus($status)
     {
 
-        if($status == 'pending') {
-            $aTask = auth()->user()->tasks->where('status', 'pending');
-         
-            if(!$aTask) return response(['message' => 'Task not found'], 404);
-    
-            return response()->json($aTask, 200);
+        $STATUS = ['pending', 'progress', 'completed'];
+
+        if(!in_array($status, $STATUS)){
+            return response()->json(['message' => "$status, is not defined.  Try this { pending | progress | completed}"], 422);
+        }
+        
+        $aTask = auth()->user()->tasks->where('status', $status);
+
+        if($aTask->isEmpty()){
+            return response()->json(['message' => 'No task found for this status'], 404);
         }
 
-        if($status == 'progress') {
-            $aTask = auth()->user()->tasks->where('status', 'in_progress');
-         
-            if(!$aTask) return response(['message' => 'Task not found'], 404);
-    
-            return response()->json($aTask, 200);
-        }
-
-        if($status == 'completed') {
-            $aTask = auth()->user()->tasks->where('status', 'completed');
-         
-            if(!$aTask) return response(['message' => 'Task not found'], 404);
-    
-            return response()->json($aTask, 200);
-        }
-
-        $data = [
-            'message' => "$status, is not defined.  Try this { pending | progress | completed}",
-            'status' => 404
-        ];
-
-        return response()->json($data, 200);
+        return response()->json($aTask, 404);
 
     }
 
