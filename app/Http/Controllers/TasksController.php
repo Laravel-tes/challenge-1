@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tasks;
+use DateTime;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
@@ -21,9 +22,9 @@ class TasksController extends Controller
         try {
             
             $isvalidate = Validator::make($request->all(), [
-                'title' => 'required',
+                'title' => 'required | string | max:150',
                 'description' => 'nullable',
-                'user_id' => 'required',
+                'user_id' => 'required | integer',
             ]);
 
             if($isvalidate->fails()){
@@ -109,32 +110,49 @@ class TasksController extends Controller
         return response()->json($aTask, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Tasks $tasks)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Tasks $tasks)
+
+    public function update(Request $request, $id)
     {
-        //
+
+        $aTask = auth()->user()->tasks()->find($id);
+        if(!$aTask) return response(['message'=> 'Task Not found'], 404);
+
+        $isvalidate = Validator::make($request->all(), [
+            'title' => 'required | string | max:150',
+            'description' => 'nullable'
+        ]);
+
+        if($isvalidate->fails()){
+
+            $data = ['message' => 'validation is require, check the data', 'error' => $isvalidate->errors(), 'status' => 400];
+
+            return response()->json($data, 400);
+        }
+
+        #$aTime = new DateTime();
+        $aTask->title = $request->title;
+        $aTask->description = $request->description;
+        #$aTask->updated_at = $aTime->format('Y-m-d H:i:s');
+
+        $aTask->save();
+
+        return response()->json(null, 204);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+  
     public function delete($id)
     {
         $aTask = auth()->user()->tasks()->find($id);
 
         if(!$aTask) return response(['message'=> 'Task not found'], 404);
 
-        //Tasks::where('id', $id)->delete();
+        Tasks::where('id', $id)->delete();
 
         return response()->json($aTask->user_id, 200);
         
