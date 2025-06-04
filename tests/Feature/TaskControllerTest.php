@@ -64,7 +64,7 @@ class TaskControllerTest extends TestCase
 
     }
 
-    public function test_update_status(): void{
+    public function test_update_task_status(): void{
 
         $user = $this->autenticate();
         $task = Tasks::factory()->create(['user_id' => $user->id, 'status' => 'completed']);
@@ -73,6 +73,18 @@ class TaskControllerTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('tasks', ['id' => $task->id, 'status' => 'in_progress']);
+
+    }
+
+    public function test_update_task(): void{
+
+        $user = $this->autenticate();
+        $task = Tasks::factory()->create(['user_id' => $user->id, 'title' => 'Novo TItle', 'description' => 'Nova Description', 'status' => 'in_progress']);
+
+        $response = $this->patchJson("/api/task/{$task->id}", ['title' => 'Novo TItle', 'description' => 'Nova Description', 'status' => 'in_progress']);
+
+        $response->assertStatus(204);
+        $this->assertDatabaseHas('tasks', ['id' => $task->id, 'title' => 'Novo TItle', 'description' => 'Nova Description', 'status' => 'in_progress']);
 
     }
 
@@ -87,7 +99,23 @@ class TaskControllerTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
 
+    }
+
+    public function test_filter_tasks_by_status(): void {
+
+        $user = $this->autenticate();
+
+        Tasks::factory()->create(['user_id' => $user->id, 'status' => 'pending']);
+        Tasks::factory()->create(['user_id' => $user->id, 'status' => 'completed']);
+
+        $status = "pending";
+
+        $response = $this->getJson("/api/tasks/status/{$status}");
+        $response->assertStatus(404);
 
     }
 
+
+
 }
+
