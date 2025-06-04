@@ -74,6 +74,18 @@ class TaskControllerTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseHas('tasks', ['id' => $task->id, 'status' => 'in_progress']);
 
+    }
+
+    public function test_delete_status(): void{
+
+        $user = $this->autenticate();
+
+        $task = Tasks::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->deleteJson("/api/task/{$task->id}");
+
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
 
 
     }
