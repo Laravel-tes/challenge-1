@@ -2,26 +2,31 @@
 # TESTE 1 - PHP LARAVEL - TO DO LIST
 
 Criar uma API RESTful em Laravel para que cada usuário possa criar e gerenciar suas tarefas. A
-API deve permitir criar, listar, atualizar status, deletar e filtrar tarefas por status.
+API deve permitir:
+    1. Criar
+    2. Listar
+    3. Atualizar status
+    4. Deletar
+    5. filtrar tarefas por status.
 
 ## ✅ Pré-requisitos
 
 Antes de começar, certifique-se de ter instalado:
 
-- [PHP](https://www.php.net/) (>= 8.x) *(caso esteja usando Laravel)*
+- [PHP](https://www.php.net/) (>= 8.x)
 - [Composer](https://getcomposer.org/)
-- [MySQL](https://www.mysql.com/) ou outro banco de dados compatível
-- [Node.js](https://nodejs.org/) e [npm](https://www.npmjs.com/) (se usar frontend ou mix)
+- [MySQL](https://www.mysql.com/) 
+- [Node.js](https://nodejs.org/) e [npm](https://www.npmjs.com/)
 - [Postman](https://www.postman.com/) ou `curl` para testar a API
 
----
 
-## ⚙️ Como configurar o projeto
+
+## Como configurar o projeto ⚙️
 
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-projeto.git
+   git clone https://github.com/aja-silason/nome-do-projeto.git
    cd nome-do-projeto
 ````
 
@@ -42,27 +47,32 @@ Antes de começar, certifique-se de ter instalado:
    ```bash
    php artisan key:generate
    ```
+5. Rode o docker, docker-compose, certifique-se que tem o Docker instalado na máquina:
 
-5. Configure as variáveis de ambiente no `.env` (ex: conexão com o banco de dados):
+   ```bash
+    docker-compose up -d
+   ```
+
+6. Configure as variáveis de ambiente no `.env` (ex: conexão com o banco de dados):
 
    ```dotenv
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=nome_do_banco
-   DB_USERNAME=seu_usuario
-   DB_PASSWORD=sua_senha
+   DB_PORT=3308
+   DB_DATABASE=laravel_challenge
+   DB_USERNAME=laravel
+   DB_PASSWORD=laravel
    ```
 
 ---
 
-## 🗃️ Como rodar as migrations
+## Rodar as migrations 🗃️
 
 ```bash
 php artisan migrate
 ```
 
-Se quiser também popular com dados fictícios (caso tenha seeders):
+Popular o banco de dados com o primeiro user :
 
 ```bash
 php artisan db:seed
@@ -70,7 +80,7 @@ php artisan db:seed
 
 ---
 
-## ▶️ Como executar o servidor local
+##  Executar o servidor local ▶️
 
 ```bash
 php artisan serve
@@ -78,13 +88,25 @@ php artisan serve
 
 O projeto estará disponível em:
 
-```
-http://127.0.0.1:8000
+```bash
+http://127.0.0.1:8000/
 ```
 
 ---
 
-## 🧪 Como testar a API
+##  Como testar a API 🧪
+
+### Testando o Controller
+
+Todos os testes do Projecto
+```bash
+php artisan test
+```
+
+Os testes do controller Task(Tarefas)
+```bash
+php artisan test --filter=TaskControllerTest
+```
 
 ### Usando Postman
 
@@ -120,42 +142,14 @@ curl -X POST http://127.0.0.1:8000/api/usuarios \
 
 ---
 
-## 📂 Estrutura do Projeto
-
-```
-├── app/
-├── bootstrap/
-├── config/
-├── database/
-│   ├── factories/
-│   ├── migrations/
-│   └── seeders/
-├── public/
-├── routes/
-│   └── api.php
-├── .env
-└── README.md
-```
-
----
-
-## 📌 Observações
+## Observações 📌
 
 * Certifique-se de que o banco de dados esteja rodando antes de executar as migrations.
-* Você pode usar o Laravel Tinker para testes rápidos: `php artisan tinker`.
 
 ---
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a MIT License.
-
-```
-
----
-
-Se você estiver usando outra stack (Node.js, Django, Flask etc.), posso adaptar o conteúdo. Deseja que eu gere uma versão específica para alguma tecnologia?
-```
 
 
 
@@ -165,7 +159,7 @@ Se você estiver usando outra stack (Node.js, Django, Flask etc.), posso adaptar
 php arisan serve
 url: localhost/8000/api/
 ```
-### Rodar o docker-cmposer
+### Rodar o docker-composer
 
 ```
 docker-compose up -d
@@ -175,13 +169,4 @@ docker-compose up -d
 ```
 php artisan serve migrate
 php artisan serve migration
-```
-### Rodar teste Geral:
-```
-php artisan test
-```
-### Rodar teste Em um Controller(Task):
-
-```
-php artisan test --filter=TaskControllerTest
 ```
