@@ -114,13 +114,13 @@ php artisan test --filter=TaskControllerTest
 2. Exemplo de requisição `GET`:
 
 ```
-GET http://127.0.0.1:8000/api/usuarios
+GET http://127.0.0.1:8000/api/user
 ```
 
 3. Exemplo de requisição `POST` com JSON:
 
 ```
-POST http://127.0.0.1:8000/api/usuarios
+POST http://127.0.0.1:8000/api/user
 Content-Type: application/json
 
 {
@@ -133,11 +133,30 @@ Content-Type: application/json
 ### Usando curl
 
 ```bash
-curl -X GET http://127.0.0.1:8000/api/usuarios
+curl -X GET http://127.0.0.1:8000/api/user
 
-curl -X POST http://127.0.0.1:8000/api/usuarios \
+curl -X POST http://127.0.0.1:8000/api/user \
   -H "Content-Type: application/json" \
   -d '{"nome": "João", "email": "joao@email.com", "senha": "123456"}'
+```
+
+### Rotas da aplicação
+
+Rotas Públicas
+```bash
+   POST '/sign-up'
+   POST '/login'
+```
+Rotas privadas
+```bash
+   GET    '/user'
+   POST   '/tasks'
+   GET    '/tasks'
+   GET    '/tasks/find/{id}'
+   PATCH  '/task/{id}/status'
+   PATCH  '/task/{id}'
+   DELETE '/task/{id}'
+   GET    '/tasks/status/{status}'
 ```
 
 ---
